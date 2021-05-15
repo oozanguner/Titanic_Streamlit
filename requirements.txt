@@ -2,4 +2,4 @@ joblib==0.17.0
 streamlit==0.81.1
 pandas==0.17.0
 numpy==1.18.5
-cython-0.29.23
+
