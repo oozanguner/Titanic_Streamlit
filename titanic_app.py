@@ -22,15 +22,15 @@ train = pd.read_pickle("train.pkl")
 def input_func(data):
     passengerId = np.random.randint (1, 891)
     ticket = "Ab32341"
+    st.header ("Passenger Information")
     sex = st.selectbox ("Gender", ["Male", "Female"])
     status = st.selectbox ("Marital Status", ["Married", "Single"])
-    st.sidebar.header ("Passenger Information")
-    pClass = st.sidebar.slider ("Ticket Class", 1, 3)
+    pClass = st.selectbox ("Ticket Class", [1, 3])
     fare = data.loc[data["Pclass"] == pClass]["Fare"].mean ()
-    age = st.sidebar.slider ("Age", 0.5, 80.0, step=0.5)
-    alone = st.sidebar.selectbox ("Do you have any family members on Titanic?", ["Yes", "No"])
-    cabin = st.sidebar.selectbox ("Have you got any Cabin Number", ["Yes", "No"])
+    alone = st.selectbox ("Do you have any family members on Titanic?", ["Yes", "No"])
+    cabin = st.selectbox ("Have you got any Cabin Number", ["Yes", "No"])
     embarked = st.selectbox ("Port of Embarkation", ["Cherbourg", "Queenstown", "Southampton"])
+    age = st.slider ("Age", 0.5, 80.0, step=0.5)
     if alone == "Yes":
         sibSp = 1
         parch = 0
