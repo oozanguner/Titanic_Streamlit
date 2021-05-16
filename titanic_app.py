@@ -25,7 +25,7 @@ def input_func(data):
     st.header ("Passenger Information")
     sex = st.selectbox ("Gender", ["Male", "Female"])
     status = st.selectbox ("Marital Status", ["Married", "Single"])
-    pClass = st.selectbox ("Ticket Class", [1, 3])
+    pClass = st.selectbox ("Ticket Class", [1, 2, 3])
     fare = data.loc[data["Pclass"] == pClass]["Fare"].mean ()
     alone = st.selectbox ("Do you have any family members on Titanic?", ["Yes", "No"])
     cabin = st.selectbox ("Have you got any Cabin Number", ["Yes", "No"])
