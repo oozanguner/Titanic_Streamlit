@@ -10,27 +10,26 @@ pd.set_option ("display.max_columns", None)
 pd.set_option ('display.expand_frame_repr', False)
 pd.set_option ('display.width', 1000)
 
-st.title ("TITANIC SURVIVAL PREDICTION")
+st.title (":ship: TITANIC SURVIVAL PREDICTION")
 st.write ("""
-### What would your survival probability be if you had been in Titanic?""")
+ *
+ The app predicts your survival probability if you had been on Titanic by using Random Forests algorithm and the real datas of Titanic's passengers.*""")
 
-
-
-train = pd.read_pickle("train.pkl")
+train = pd.read_pickle ("train.pkl")
 
 
 def input_func(data):
     passengerId = np.random.randint (1, 891)
     ticket = "Ab32341"
+    st.subheader ("Passenger Information")
     sex = st.selectbox ("Gender", ["Male", "Female"])
     status = st.selectbox ("Marital Status", ["Married", "Single"])
-    st.sidebar.header ("Passenger Information")
-    pClass = st.sidebar.slider ("Ticket Class", 1, 3)
+    pClass = st.selectbox ("Ticket Class", [1, 2, 3])
     fare = data.loc[data["Pclass"] == pClass]["Fare"].mean ()
-    age = st.sidebar.slider ("Age", 0.5, 80.0, step=0.5)
-    alone = st.sidebar.selectbox ("Do you have any family members on Titanic?", ["Yes", "No"])
-    cabin = st.sidebar.selectbox ("Have you got any Cabin Number", ["Yes", "No"])
+    alone = st.selectbox ("Do you have any family members on Titanic?", ["Yes", "No"])
+    cabin = st.selectbox ("Have you got any Cabin Number", ["Yes", "No"])
     embarked = st.selectbox ("Port of Embarkation", ["Cherbourg", "Queenstown", "Southampton"])
+    age = st.slider ("Age", 0.5, 80.0, step=0.5)
     if alone == "Yes":
         sibSp = 1
         parch = 0
@@ -159,7 +158,6 @@ def titanic_prep(data):
     return new_df
 
 
-
 df_prep = titanic_prep (new_train).reset_index (drop=True)
 
 submission = df_prep.tail (1)
@@ -169,6 +167,23 @@ rfc_from_joblib = joblib.load ('tuned_rfc.pkl')
 
 life_prob = rfc_from_joblib.predict_proba (submission)[:, 1][0] * 100
 
-st.write ("""
-# Your Life Expectancy : % {:.2f}""".format (life_prob))
 
+def click_button(life_prob):
+    if 0 <= life_prob < 30:
+        emoji = ":scream:"
+    elif 30 <= life_prob < 50:
+        emoji = ":frowning:"
+    elif life_prob == 50:
+        emoji = ":worried:"
+    elif 60 >= life_prob > 50:
+        emoji = ":relieved:"
+    elif 80 >= life_prob > 60:
+        emoji = ":sweat_smile:"
+    else:
+        emoji = ":sunglasses:"
+
+    if st.button (""" Click Here To See Your Life Expectancy !!!"""):
+        st.markdown ("""# *Your Life Expectancy :* % {:.2f} {}""".format (life_prob, emoji))
+
+
+click_button (life_prob)
