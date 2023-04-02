@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run titanic_app.py
+web: gunicorn titanic_app:app
